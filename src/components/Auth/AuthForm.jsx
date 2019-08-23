@@ -1,6 +1,5 @@
 import React from 'react';
-import { Form, Icon, Input, Button } from 'antd';
-import { firebaseConfig } from '../../firebase_config';
+import { Form, Icon, Input, Button, Alert } from 'antd';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -13,25 +12,51 @@ const hasErrors = fieldsError => {
 };
 
 export class _AuthForm extends React.Component {
+  state = {
+    wrongPass: false,
+    loading: false
+  };
   componentDidMount() {
+    this.setState({ loading: this.props.load });
     this.props.form.validateFields();
     console.log(this.props.data);
   }
 
-  handleSubmit = e => {
+  handleSignOut = e => {
+    e.preventDefault();
+    firebase.auth().signOut();
+  };
+
+  handleSubmit = async e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        firebase
-          .auth()
-          .signInWithEmailAndPassword(values.username, values.password);
+        if (this.props.data.isAuth) {
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(values.username, values.password);
+        } else {
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(values.username, values.password)
+            .catch(err => {
+              console.log(err.code);
+              if (err.code === 'auth/email-already-in-use') {
+                firebase
+                  .auth()
+                  .signInWithEmailAndPassword(values.username, values.password)
+                  .catch(err => {
+                    this.setState({ wrongPass: true });
+                  });
+              }
+            });
+        }
       }
     });
   };
 
   render() {
-    const btnName = this.props.data.isAuth ? 'Log out' : 'Log in';
     const {
       getFieldDecorator,
       getFieldsError,
@@ -44,45 +69,77 @@ export class _AuthForm extends React.Component {
       isFieldTouched('username') && getFieldError('username');
     const passwordError =
       isFieldTouched('password') && getFieldError('password');
-    return (
-      <Form layout="inline" onSubmit={this.handleSubmit}>
-        <Form.Item
-          validateStatus={usernameError ? 'error' : ''}
-          help={usernameError || ''}
-        >
-          {getFieldDecorator('username', {
-            rules: [{ required: true, message: 'Please input your username!' }]
-          })(
-            <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Username"
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          validateStatus={passwordError ? 'error' : ''}
-          help={passwordError || ''}
-        >
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }]
-          })(
-            <Input
-              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              type="password"
-              placeholder="Password"
-            />
-          )}
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            disabled={hasErrors(getFieldsError())}
-          >
-            {btnName}
+
+    let formContent = null;
+    if (this.props.data.isAuth) {
+      formContent = (
+        <Form layout="inline" onSubmit={this.handleSignOut}>
+          <p>{this.props.data.user}</p>
+          <Button type="primary" htmlType="submit">
+            Log out
           </Button>
-        </Form.Item>
-      </Form>
+        </Form>
+      );
+    } else {
+      formContent = (
+        <Form layout="inline" onSubmit={this.handleSubmit}>
+          <Form.Item
+            validateStatus={usernameError ? 'error' : ''}
+            help={usernameError || ''}
+          >
+            {getFieldDecorator('username', {
+              rules: [
+                { required: true, message: 'Please input your username!' }
+              ]
+            })(
+              <Input
+                prefix={
+                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder="Username"
+              />
+            )}
+          </Form.Item>
+          <Form.Item
+            validateStatus={passwordError ? 'error' : ''}
+            help={passwordError || ''}
+          >
+            {getFieldDecorator('password', {
+              rules: [
+                { required: true, message: 'Please input your Password!' }
+              ]
+            })(
+              <Input
+                prefix={
+                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                type="password"
+                placeholder="Password"
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={hasErrors(getFieldsError())}
+            >
+              Login/Register
+            </Button>
+          </Form.Item>
+          {this.state.wrongPass ? (
+            <Alert message="Wrong password" type="error" showIcon closable />
+          ) : null}
+        </Form>
+      );
+    }
+
+    return this.state.loading ? (
+      <Button type="primary" loading>
+        Loading
+      </Button>
+    ) : (
+      formContent
     );
   }
 }

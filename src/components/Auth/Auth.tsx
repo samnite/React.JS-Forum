@@ -3,20 +3,27 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { AuthFormComponent } from './AuthForm';
 import { connect } from 'react-redux';
-import { setAuthStatus } from '../../store/data/actions';
+import { setAuthStatus, setUserName } from '../../store/data/actions';
 import { firebaseConfig } from '../../firebase_config';
+import {RootState} from '../../store/store';
+import {DataState} from '../../store/data/reducer'
+
+
+const mapStateToProps = ({data}: RootState): { data: DataState } => ({data});
 
 class Auth extends React.Component {
   componentDidMount() {
-    console.log(this.props.data)
     firebase.initializeApp(firebaseConfig);
-    // To disabled submit button at the beginning.
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log(user);
+        // @ts-ignore
+        this.props.setUserName(user.email)
+        // @ts-ignore
         this.props.setAuthStatus(true);
+        console.log(user, user.email);
       } else {
         console.log('non user');
+        // @ts-ignore
         this.props.setAuthStatus(false);
       }
     });
@@ -27,9 +34,8 @@ class Auth extends React.Component {
   }
 }
 
-const mapStateToProps = ({ data }) => ({ data });
 
 export default connect(
   mapStateToProps,
-  { setAuthStatus }
+  { setAuthStatus, setUserName }
 )(Auth);
