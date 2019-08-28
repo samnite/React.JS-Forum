@@ -1,15 +1,20 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import {AuthFormComponent} from './AuthForm';
-import {connect} from 'react-redux';
-import {setAuthStatus, setUserName} from '../../store/data/actions';
-import {firebaseConfig} from '../../firebase_config';
-import {RootState} from '../../store/store';
-import {DataState} from '../../store/data/reducer'
+import { AuthFormComponent } from './AuthForm';
+import { connect } from 'react-redux';
+import {
+    setAuthStatus,
+    setMessages,
+    setUserName
+} from '../../store/data/actions';
+import { firebaseConfig } from '../../firebase_config';
+import { RootState } from '../../store/store';
+import { DataState } from '../../store/data/reducer';
 
-
-const mapStateToProps = ({data}: RootState): { data: DataState } => ({data});
+const mapStateToProps = ({ data }: RootState): { data: DataState } => ({
+    data
+});
 
 class Auth extends React.Component {
     componentDidMount() {
@@ -20,6 +25,8 @@ class Auth extends React.Component {
                 this.props.setUserName(user.email);
                 // @ts-ignore
                 this.props.setAuthStatus(true);
+                // @ts-ignore
+                this.props.setMessages();
                 console.log(user);
             } else {
                 console.log('non user');
@@ -30,12 +37,11 @@ class Auth extends React.Component {
     }
 
     render() {
-        return <AuthFormComponent/>;
+        return <AuthFormComponent />;
     }
 }
 
-
 export default connect(
     mapStateToProps,
-    {setAuthStatus, setUserName}
+    { setAuthStatus, setUserName, setMessages }
 )(Auth);

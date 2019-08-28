@@ -11,11 +11,13 @@ class MessagesComponent extends React.Component {
 
     writeMessage = () => {
         const db = firebase.firestore();
-        console.log(db)
+        console.log(db);
+
         // db.collection('messages')
         //   .add({
         //     user: 'Ada',
         //     message: 'samnite',
+
         //     uid: '1815'
         //   })
         //   .then(function(docRef) {
@@ -24,13 +26,6 @@ class MessagesComponent extends React.Component {
         //   .catch(function(error) {
         //     console.error('Error adding document: ', error);
         //   });
-        db.collection('messages')
-            .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    console.log(`${doc.id} => ${doc.data().message}`);
-                });
-            });
     };
 
     render() {
