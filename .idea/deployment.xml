@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="https://github.com/samnite/React.JS-Forum">
+    <serverData>
+      <paths name="https://github.com/samnite/React.JS-Forum">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="https://github.com/samnite/React.JS-Forum/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
