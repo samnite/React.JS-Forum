@@ -1,3 +1,4 @@
 export const SET_MESSAGES = 'SET_MESSAGES';
 export const SET_AUTH_STATUS = 'SET_AUTH_STATUS';
-export const SET_USER_NAME = 'SET_USER_NAME';
+export const SET_USER_DATA = 'SET_USER_NAME';
+export const SET_WRITTEN_MESSAGE = 'SET_WRITTEN_MESSAGE';

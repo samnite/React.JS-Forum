@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {
     setAuthStatus,
     setMessages,
-    setUserName
+    setUserData
 } from '../../store/data/actions';
 import { firebaseConfig } from '../../firebase_config';
 import { RootState } from '../../store/store';
@@ -22,7 +22,7 @@ class Auth extends React.Component {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 // @ts-ignore
-                this.props.setUserName(user.email);
+                this.props.setUserData(user.email, user.uid);
                 // @ts-ignore
                 this.props.setAuthStatus(true);
                 // @ts-ignore
@@ -43,5 +43,5 @@ class Auth extends React.Component {
 
 export default connect(
     mapStateToProps,
-    { setAuthStatus, setUserName, setMessages }
+    { setAuthStatus, setUserData, setMessages }
 )(Auth);

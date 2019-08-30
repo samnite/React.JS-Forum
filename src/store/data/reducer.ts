@@ -1,16 +1,30 @@
-import { SET_AUTH_STATUS, SET_MESSAGES, SET_USER_NAME } from './types';
+import {
+    SET_AUTH_STATUS,
+    SET_MESSAGES,
+    SET_USER_DATA,
+    SET_WRITTEN_MESSAGE
+} from './types';
 import { DataActions, MessageData } from './actions';
 
 export interface DataState {
     isAuth: boolean;
+    uid: string;
     user: string;
     messages: MessageData[];
+    message: MessageData;
 }
 
 export const initialState: DataState = {
     isAuth: false,
+    uid: '',
     user: '',
-    messages: []
+    messages: [],
+    message: {
+        user: '',
+        message: '',
+        date: null,
+        uid: ''
+    }
 };
 
 export function dataReducer(
@@ -24,11 +38,18 @@ export function dataReducer(
                 isAuth: action.payload
             };
         }
-        case SET_USER_NAME: {
-            return { ...state, user: action.payload };
+        case SET_USER_DATA: {
+            return {
+                ...state,
+                user: action.payload.name,
+                uid: action.payload.uid
+            };
         }
         case SET_MESSAGES: {
             return { ...state, messages: action.payload };
+        }
+        case SET_WRITTEN_MESSAGE: {
+            return { ...state, message: action.payload };
         }
 
         default:
