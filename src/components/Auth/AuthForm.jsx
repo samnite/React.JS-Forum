@@ -24,7 +24,7 @@ export class _AuthForm extends React.Component {
     }
 
     handleSignOut = e => {
-        e.preventDefault();
+        // e.preventDefault();
         firebase.auth().signOut();
     };
 

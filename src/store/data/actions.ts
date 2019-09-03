@@ -8,6 +8,7 @@ import { Dispatch } from 'redux';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { timeConverter } from '../../utils/convertDate';
+import { firestore } from 'firebase';
 
 export interface DataActions {
     type:
@@ -21,7 +22,7 @@ export interface DataActions {
 export interface MessageData {
     user: string;
     message: string;
-    date: Date | null;
+    date: Date | firestore.Timestamp | null;
     uid: string;
     key?: string | Date;
 }

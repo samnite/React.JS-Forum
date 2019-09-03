@@ -42,7 +42,7 @@ class _WriteMessage extends Component<FormProps, any> {
     };
 
     handleSubmit = (e: any) => {
-        e.preventDefault();
+        // e.preventDefault();
         //@ts-ignore
         this.props.setWrittenMessage<MessageData>({
             // @ts-ignore

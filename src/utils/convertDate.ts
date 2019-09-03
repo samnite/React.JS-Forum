@@ -1,4 +1,6 @@
-export const timeConverter = UNIX_timestamp => {
+import { firestore } from 'firebase';
+
+export const timeConverter = (UNIX_timestamp: firestore.Timestamp) => {
     const a = new Date(UNIX_timestamp.toDate());
     const months = [
         'Jan',
@@ -20,5 +22,6 @@ export const timeConverter = UNIX_timestamp => {
     const hour = a.getHours();
     const min = a.getMinutes();
     const sec = a.getSeconds();
+
     return date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
 };
