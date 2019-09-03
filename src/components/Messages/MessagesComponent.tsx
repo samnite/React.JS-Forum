@@ -1,22 +1,27 @@
 import React from 'react';
-import firebase from 'firebase/app';
+import { connect } from 'react-redux';
 import 'firebase/firestore';
+import { RootState } from '../../store/store';
+import { DataState } from '../../store/data/reducer';
+
+const mapStateToProps = ({ data }: RootState): { data: DataState } => ({
+    data
+});
 
 class MessagesComponent extends React.Component {
-    state = {};
-
-    componentDidMount() {
-        this.writeMessage();
-    }
-
-    writeMessage = () => {
-        const db = firebase.firestore();
-        console.log(db);
-    };
-
     render() {
-        return <div>MessagesComponent</div>;
+        // @ts-ignore
+        // return this.props.data.messages.map((el: MessageData) => {
+        //     return (
+        //         <div className="Messages" key={new Date()}>
+        //             <p>{el.user}</p>
+        //             <p>{el.message}</p>
+        //             <p>{el.date}</p>
+        //         </div>
+        //     );
+        // });
+        return <p>test</p>;
     }
 }
 
-export default MessagesComponent;
+export const Messages = connect(mapStateToProps)(MessagesComponent);

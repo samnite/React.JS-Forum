@@ -5,7 +5,9 @@ import {
     SET_WRITTEN_MESSAGE
 } from './types';
 import { Dispatch } from 'redux';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { timeConverter } from '../../utils/convertDate';
 
 export interface DataActions {
     type:
@@ -21,6 +23,7 @@ export interface MessageData {
     message: string;
     date: Date | null;
     uid: string;
+    key?: string | Date;
 }
 
 // Write message action
@@ -31,9 +34,10 @@ export const setWrittenMessage = (message: MessageData) => {
             .collection('messages')
             .add({ message })
             .then((docRef: { id: string }) => {
+                console.log(message);
                 console.log('Document written with ID: ', docRef.id);
             })
-            .then((err: any) => {
+            .catch((err: any) => {
                 console.error('Error adding document: ', err);
             });
         dispatch<DataActions>({
@@ -41,19 +45,6 @@ export const setWrittenMessage = (message: MessageData) => {
             payload: message
         });
     };
-    // db.collection('messages')
-    //   .add({
-    //     user: 'Ada',
-    //     message: 'samnite',
-
-    //     uid: '1815'
-    //   })
-    //   .then(function(docRef) {
-    //     console.log('Document written with ID: ', docRef.id);
-    //   })
-    //   .catch(function(error) {
-    //     console.error('Error adding document: ', error);
-    //   });
 };
 
 // Set array of messages
@@ -66,12 +57,14 @@ export const setMessages = () => {
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
+                    console.log(doc.data().message.date);
                     // console.log(`${doc.id} => ${doc.data().message}`);
                     messageCollection.push({
-                        user: doc.data().user,
-                        message: doc.data().message,
-                        date: new Date(doc.data().date),
-                        uid: doc.data().uid
+                        user: doc.data().message.name,
+                        message: doc.data().message.message,
+                        date: doc.data().message.date,
+                        uid: doc.data().message.uid,
+                        key: timeConverter(doc.data().message.date)
                     });
                 });
             });

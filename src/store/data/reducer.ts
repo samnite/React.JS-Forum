@@ -23,7 +23,8 @@ export const initialState: DataState = {
         user: '',
         message: '',
         date: null,
-        uid: ''
+        uid: '',
+        key: ''
     }
 };
 
