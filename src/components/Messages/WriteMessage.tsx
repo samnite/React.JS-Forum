@@ -5,8 +5,13 @@ import { MessageData, setWrittenMessage } from '../../store/data/actions';
 import { RootState } from '../../store/store';
 import { DataState } from '../../store/data/reducer';
 import { FormComponentProps } from 'antd/es/form';
+import { OwnProps } from '../../App';
 
-interface FormProps extends FormComponentProps {}
+export interface FormProps extends FormComponentProps {
+    onChange(e: DataState): void;
+
+    setWrittenMessage(e: MessageData): void;
+}
 
 const { TextArea } = Input;
 const mapStateToProps = ({ data }: RootState): { data: DataState } => ({
@@ -17,14 +22,18 @@ const hasErrors = (fieldsError: { [x: string]: unknown }) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 };
 
-class _WriteMessage extends Component<FormProps, any> {
+type State = Readonly<{
+    message: string;
+}>;
+
+class _WriteMessage extends Component<OwnProps, State> {
     state = {
         message: ''
     };
 
     triggerChange = (changedValue: any) => {
         // Should provide an event to pass value to Form.
-        // @ts-ignore
+
         const { onChange } = this.props;
         if (onChange) {
             onChange({
@@ -41,20 +50,15 @@ class _WriteMessage extends Component<FormProps, any> {
         this.triggerChange({});
     };
 
-    handleSubmit = (e: any) => {
+    handleSubmit = () => {
         // e.preventDefault();
-        //@ts-ignore
-        this.props.setWrittenMessage<MessageData>({
-            // @ts-ignore
-            name: this.props.data.user,
+
+        this.props.setWrittenMessage({
+            user: this.props.data.user,
             message: this.state.message,
-            // @ts-ignore
             uid: this.props.data.uid,
             date: new Date()
         });
-        console.log(e);
-
-        console.log(this.props.form);
     };
 
     render() {
@@ -67,8 +71,6 @@ class _WriteMessage extends Component<FormProps, any> {
 
         const messageError =
             isFieldTouched('message') && getFieldError('message');
-
-        // @ts-ignore
 
         return (
             <Form layout="vertical" onSubmit={this.handleSubmit}>

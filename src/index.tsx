@@ -5,9 +5,10 @@ import { App } from './App';
 import { store } from './store/store';
 import 'antd/dist/antd.css';
 
+// @ts-ignore
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.querySelector('#root')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.querySelector('#root')
 );

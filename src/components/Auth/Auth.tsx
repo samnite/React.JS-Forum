@@ -16,21 +16,24 @@ const mapStateToProps = ({ data }: RootState): { data: DataState } => ({
     data
 });
 
-class Auth extends React.Component {
+interface MethodsProps {
+    setUserData(user: string | null, uid: string): void;
+
+    setAuthStatus(isAuth: boolean): void;
+
+    setMessages(): void;
+}
+
+class Auth extends React.Component<MethodsProps> {
     componentDidMount() {
         firebase.initializeApp(firebaseConfig);
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                // @ts-ignore
                 this.props.setUserData(user.email, user.uid);
-                // @ts-ignore
                 this.props.setAuthStatus(true);
-                // @ts-ignore
                 this.props.setMessages();
-                console.log(user);
             } else {
                 console.log('non user');
-                // @ts-ignore
                 this.props.setAuthStatus(false);
             }
         });

@@ -4,31 +4,39 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 
 import { connect } from 'react-redux';
+import { RootState } from '../../store/store';
+import { DataState } from '../../store/data/reducer';
+import { OwnProps } from '../../App';
 
-const mapStateToProps = ({ data }) => ({ data });
+const mapStateToProps = ({ data }: RootState): { data: DataState } => ({
+    data
+});
 
-const hasErrors = fieldsError => {
+const hasErrors = (fieldsError: any) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 };
 
-export class _AuthForm extends React.Component {
+type State = Readonly<{
+    wrongPass: boolean;
+    loading: boolean;
+}>;
+
+export class _AuthForm extends React.Component<OwnProps, State> {
     state = {
         wrongPass: false,
         loading: false
     };
 
     componentDidMount() {
-        this.setState({ loading: this.props.load });
         this.props.form.validateFields();
-        console.log(this.props.data);
     }
 
-    handleSignOut = e => {
+    handleSignOut = () => {
         // e.preventDefault();
         firebase.auth().signOut();
     };
 
-    handleSubmit = async e => {
+    handleSubmit = async (e: any) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
