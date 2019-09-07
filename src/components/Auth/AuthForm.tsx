@@ -28,7 +28,7 @@ export class _AuthForm extends React.Component<OwnProps, State> {
     };
 
     componentDidMount() {
-        this.props.form.validateFields();
+        // this.props.form.validateFields();
     }
 
     handleSignOut = () => {
@@ -40,7 +40,6 @@ export class _AuthForm extends React.Component<OwnProps, State> {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 if (this.props.data.isAuth) {
                     firebase
                         .auth()
@@ -56,8 +55,8 @@ export class _AuthForm extends React.Component<OwnProps, State> {
                             values.password
                         )
                         .catch(err => {
-                            console.log(err.code);
                             if (err.code === 'auth/email-already-in-use') {
+                                console.log(err.code);
                                 firebase
                                     .auth()
                                     .signInWithEmailAndPassword(

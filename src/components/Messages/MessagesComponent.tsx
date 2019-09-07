@@ -19,14 +19,14 @@ class MessagesComponent extends React.Component {
             const date = timeConverter(el.date);
             return (
                 // @ts-ignore
-                <div className="Messages" key={this.props.data.key}>
-                    <p>
+                <div className="Messages" key={el.key}>
+                    <p key="sdsd">
                         <strong>Author:</strong> {el.user}
                     </p>
-                    <p>
+                    <p key="sdsdsdsd">
                         <strong>Message:</strong> {el.message}
                     </p>
-                    <p>
+                    <p key="554544554">
                         <strong>Post date:</strong> {date}
                     </p>
                 </div>

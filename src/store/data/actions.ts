@@ -58,10 +58,8 @@ export const setMessages = () => {
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    console.log(doc.data().message.date);
-                    // console.log(`${doc.id} => ${doc.data().message}`);
                     messageCollection.push({
-                        user: doc.data().message.name,
+                        user: doc.data().message.user,
                         message: doc.data().message.message,
                         date: doc.data().message.date,
                         uid: doc.data().message.uid,
