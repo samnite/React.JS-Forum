@@ -23,7 +23,9 @@ class _App extends React.Component<OwnProps> {
         return (
             <div className="header">
                 <Auth />
-                <Messages />
+                <div className="MessagesBlock">
+                    <Messages />
+                </div>
                 {this.props.data.isAuth ? <WriteMessageComponent /> : null}
             </div>
         );

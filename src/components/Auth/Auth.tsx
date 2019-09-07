@@ -33,7 +33,7 @@ class Auth extends React.Component<MethodsProps> {
                 this.props.setAuthStatus(true);
                 this.props.setMessages();
             } else {
-                console.log('non user');
+                // No user data
                 this.props.setAuthStatus(false);
             }
         });

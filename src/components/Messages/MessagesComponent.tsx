@@ -20,15 +20,14 @@ class MessagesComponent extends React.Component {
             return (
                 // @ts-ignore
                 <div className="Messages" key={el.key}>
-                    <p key="sdsd">
+                    <p>{el.message}</p>
+
+                    <p>
                         <strong>Author:</strong> {el.user}
                     </p>
-                    <p key="sdsdsdsd">
-                        <strong>Message:</strong> {el.message}
-                    </p>
-                    <p key="554544554">
+                    <span className="time-right">
                         <strong>Post date:</strong> {date}
-                    </p>
+                    </span>
                 </div>
             );
         });

@@ -55,6 +55,7 @@ export const setMessages = () => {
         const messageCollection: MessageData[] = [];
         await db
             .collection('messages')
+            .orderBy('message.date', 'asc') //sort posts by field 'date'
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
