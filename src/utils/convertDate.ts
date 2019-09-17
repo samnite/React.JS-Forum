@@ -23,5 +23,25 @@ export const timeConverter = (UNIX_timestamp: firestore.Timestamp) => {
     const min = a.getMinutes();
     const sec = a.getSeconds();
 
-    return date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    const formatZeros = (number: number): string | number => {
+        if (number < 10) {
+            return `0${number}`;
+        } else {
+            return number;
+        }
+    };
+
+    return (
+        date +
+        ' ' +
+        month +
+        ' ' +
+        year +
+        ' ' +
+        formatZeros(hour) +
+        ':' +
+        formatZeros(min) +
+        ':' +
+        formatZeros(sec)
+    );
 };

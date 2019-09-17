@@ -14,6 +14,8 @@ const mapStateToProps = ({ data }: RootState): { data: DataState } => ({
 class MessagesComponent extends React.Component {
     render() {
         // @ts-ignore
+        console.log(this.props.data.messages);
+        // @ts-ignore
         return this.props.data.messages.map((el: MessageData) => {
             // @ts-ignore
             const date = timeConverter(el.date);
